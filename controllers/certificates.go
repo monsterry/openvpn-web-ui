@@ -9,11 +9,11 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/adamwalach/go-openvpn/client/config"
-	"github.com/adamwalach/openvpn-web-ui/lib"
-	"github.com/adamwalach/openvpn-web-ui/models"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
+	"github.com/monsterry/go-openvpn/client/config"
+	"github.com/monsterry/openvpn-web-ui/lib"
+	"github.com/monsterry/openvpn-web-ui/models"
 )
 
 type NewCertParams struct {
@@ -40,11 +40,11 @@ func (c *CertificatesController) DownloadSingleConfig() {
 	filename := fmt.Sprintf("%s.ovpn", name)
 
 	c.Ctx.Output.Header("Content-Type", "text/plain")
-  c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s\"", filename))
+	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s\"", filename))
 
 	keysPath := models.GlobalCfg.OVConfigPath + "keys/"
-  if cfgPath, err := saveClientSingleConfig(name, keysPath); err == nil {
-		c.Ctx.Output.Download(cfgPath, filename);
+	if cfgPath, err := saveClientSingleConfig(name, keysPath); err == nil {
+		c.Ctx.Output.Download(cfgPath, filename)
 	}
 
 }
@@ -178,9 +178,9 @@ func saveClientConfig(name string) (string, error) {
 func saveClientSingleConfig(name string, pathString string) (string, error) {
 	cfg := config.New()
 	cfg.ServerAddress = models.GlobalCfg.ServerAddress
-	cfg.Cert = readCert(pathString + name + ".crt");
-	cfg.Key = readCert(pathString + name + ".key");
-	cfg.Ca = readCert(pathString + "ca.crt");
+	cfg.Cert = readCert(pathString + name + ".crt")
+	cfg.Key = readCert(pathString + name + ".key")
+	cfg.Ca = readCert(pathString + "ca.crt")
 	serverConfig := models.OVConfig{Profile: "default"}
 	serverConfig.Read("Profile")
 	cfg.Port = serverConfig.Port
@@ -199,11 +199,11 @@ func saveClientSingleConfig(name string, pathString string) (string, error) {
 	return destPath, nil
 }
 
-func readCert(path string) (string) {
- 	buff, err := ioutil.ReadFile(path) // just pass the file name
-  if err != nil {
+func readCert(path string) string {
+	buff, err := ioutil.ReadFile(path) // just pass the file name
+	if err != nil {
 		beego.Error(err)
-		return "";
-  }
-  return string(buff);
+		return ""
+	}
+	return string(buff)
 }

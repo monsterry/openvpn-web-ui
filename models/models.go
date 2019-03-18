@@ -3,9 +3,9 @@ package models
 import (
 	"os"
 
-	"github.com/adamwalach/go-openvpn/server/config"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
+	"github.com/monsterry/go-openvpn/server/config"
 	passlib "gopkg.in/hlandau/passlib.v1"
 )
 
@@ -76,7 +76,7 @@ func createDefaultSettings() {
 		MIAddress:     "openvpn:2080",
 		MINetwork:     "tcp",
 		ServerAddress: "127.0.0.1",
-		OVConfigPath:  "/etc/openvpn/",
+		OVConfigPath:  "/etc/openvpn/",controllers/api-session.go
 	}
 	o := orm.NewOrm()
 	if created, _, err := o.ReadOrCreate(&s, "Profile"); err == nil {
