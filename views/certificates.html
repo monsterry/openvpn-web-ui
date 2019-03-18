@@ -39,9 +39,9 @@
                     <a href="{{urlfor "CertificatesController.Download" ":key" .Details.Name}}">
                       {{ .Details.Name }}.zip
                     </a>
-                    <a href="{{urlfor "CertificatesController.DownloadSingleConfig" ":key" .Details.Name}}">
+                    <!-- <a href="{{urlfor "CertificatesController.DownloadSingleConfig" ":key" .Details.Name}}">
                       {{ .Details.Name }}.ovpn
-                    </a>
+                    </a> -->
                   </td>
                   <td>{{ .EntryType }}</td>
                   <td>{{ dateformat .ExpirationT "2006-01-02 15:04"}}</td>
