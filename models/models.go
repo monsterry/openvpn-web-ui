@@ -77,6 +77,7 @@ func createDefaultSettings() {
 		MINetwork:     "tcp",
 		ServerAddress: "127.0.0.1",
 		OVConfigPath:  "/etc/openvpn/",
+		ServerName:    "server",
 	}
 	o := orm.NewOrm()
 	if created, _, err := o.ReadOrCreate(&s, "Profile"); err == nil {

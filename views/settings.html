@@ -39,6 +39,12 @@
       </div>
 
       <div class="form-group">
+        <label for="name">Server Name</label>
+        <input type="text" class="form-control" id="ServerName" name="ServerName" placeholder="Enter the servers FQDN"
+          value="{{ .Settings.ServerName }}">
+      </div>
+
+      <div class="form-group">
         <label for="name">ConfigPath</label>
         <input type="text" class="form-control" id="OVConfigPath" name="OVConfigPath" placeholder="Enter config path"
           value="{{ .Settings.OVConfigPath }}">

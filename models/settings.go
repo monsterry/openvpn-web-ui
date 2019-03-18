@@ -19,6 +19,8 @@ type Settings struct {
 
 	ServerAddress string `orm:"size(64);unique" form:"ServerAddress" valid:"Required;"`
 
+	ServerName string `orm:"size(64);unique" form:"ServerName" valid:"Required;"`
+
 	Created time.Time `orm:"auto_now_add;type(datetime)"`
 	Updated time.Time `orm:"auto_now;type(datetime)"`
 }
