@@ -25,11 +25,14 @@ type Cert struct {
 }
 
 type Details struct {
-	Name         string
-	CN           string
-	Country      string
-	Organisation string
-	Email        string
+	Name               string
+	CN                 string
+	Country            string
+	Organisation       string
+	Province           string
+	City               string
+	Email              string
+	OrganisationalUnit string
 }
 
 func ReadCerts(path string) ([]*Cert, error) {
@@ -68,7 +71,7 @@ func parseDetails(d string) *Details {
 	details := &Details{}
 	lines := strings.Split(trim(string(d)), "/")
 	for _, line := range lines {
-		if strings.Contains(line, "") {
+		if strings.Contains(line, "=") {
 			fields := strings.Split(trim(line), "=")
 			switch fields[0] {
 			case "name":
@@ -77,8 +80,14 @@ func parseDetails(d string) *Details {
 				details.CN = fields[1]
 			case "C":
 				details.Country = fields[1]
+			case "ST":
+				details.Province = fields[1]
+			case "L":
+				details.City = fields[1]
 			case "O":
 				details.Organisation = fields[1]
+			case "OU":
+				details.OrganisationalUnit = fields[1]
 			case "emailAddress":
 				details.Email = fields[1]
 			default:
