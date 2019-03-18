@@ -66,6 +66,7 @@ func (c *CertificatesController) Download() {
 	addFileToZip(zw, keysPath+"ca.crt")
 	addFileToZip(zw, keysPath+name+".crt")
 	addFileToZip(zw, keysPath+name+".key")
+	addFileToZip(zw, keysPath+"ta.key")
 
 	if err := zw.Close(); err != nil {
 		beego.Error(err)
