@@ -15,7 +15,7 @@ func init() {
 	initDB()
 	createDefaultUsers()
 	createDefaultSettings()
-	createDefaultOVConfig()
+	// createDefaultOVConfig()
 }
 
 func initDB() {
@@ -76,7 +76,7 @@ func createDefaultSettings() {
 		MIAddress:     "openvpn:2080",
 		MINetwork:     "tcp",
 		ServerAddress: "127.0.0.1",
-		OVConfigPath:  "/etc/openvpn/",controllers/api-session.go
+		OVConfigPath:  "/etc/openvpn/",
 	}
 	o := orm.NewOrm()
 	if created, _, err := o.ReadOrCreate(&s, "Profile"); err == nil {

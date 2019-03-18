@@ -19,7 +19,7 @@ func init() {
 	beego.Router("/logout", &controllers.LoginController{}, "get:Logout")
 	beego.Router("/profile", &controllers.ProfileController{})
 	beego.Router("/settings", &controllers.SettingsController{})
-	beego.Router("/ov/config", &controllers.OVConfigController{})
+	// beego.Router("/ov/config", &controllers.OVConfigController{})
 	beego.Router("/logs", &controllers.LogsController{})
 
 	beego.Include(&controllers.CertificatesController{})
