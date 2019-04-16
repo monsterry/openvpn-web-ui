@@ -1,5 +1,6 @@
 /data.db
 /openvpn-web-ui*
+/build/openvpn-web-ui*
 /lastupdate.tmp
 /vendor
 !/vendor/vendor.json

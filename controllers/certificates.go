@@ -168,7 +168,7 @@ func saveClientConfig(name string) (string, error) {
 	cfg.Cipher = serverConfig.Cipher
 	cfg.Keysize = serverConfig.Keysize
 
-	destPath := models.GlobalCfg.OVConfigPath + "keys/" + name + ".conf"
+	destPath := models.GlobalCfg.OVConfigPath + "keys/" + name + ".ovpn"
 	if err := config.SaveToFile("conf/openvpn-client-config.tpl",
 		cfg, destPath); err != nil {
 		beego.Error(err)
