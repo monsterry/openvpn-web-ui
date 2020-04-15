@@ -25,6 +25,8 @@ type Settings struct {
 
 	OVEasyRsaPath string `orm:"size(64);unique" form:"OVEasyRsaPath" valid:"Required;"`
 
+	OVExtraFiles string `orm:"size(256);unique" form:"OVExtraFiles" valid:"Optional;"`
+
 	Created time.Time `orm:"auto_now_add;type(datetime)"`
 	Updated time.Time `orm:"auto_now;type(datetime)"`
 }

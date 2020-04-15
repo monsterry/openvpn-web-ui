@@ -112,7 +112,7 @@ func parseDetails(d string) *Details {
 }
 
 func trim(s string) string {
-	return strings.Trim(strings.Trim(s, "\r\n"), "\n")
+	return strings.Trim(strings.Trim(strings.Trim(s, "\r\n"), "\n"), " ")
 }
 
 func CreateCertificate(name string) error {

@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"html/template"
+	"strings"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/orm"
@@ -42,6 +43,19 @@ func (c *SettingsController) Post() {
 		flash.Store(&c.Controller)
 		return
 	}
+
+	// // Sanatize input
+	// if strings.Contains(settings.OVExtraFiles, "/") {
+	// 	flash.Error("Extra files contained a '.'. '.'s were removed")
+	// 	settings.OVExtraFiles = strings.ReplaceAll(settings.OVExtraFiles, ".", "")
+	// 	c.Data["Settings"] = &settings
+	// }
+	if strings.Contains(settings.OVExtraFiles, "/") {
+		flash.Error("Extra files contained a '/'. '/'s were removed")
+		settings.OVExtraFiles = strings.ReplaceAll(settings.OVExtraFiles, "/", "")
+		c.Data["Settings"] = &settings
+	}
+
 	c.Data["Settings"] = &settings
 
 	o := orm.NewOrm()

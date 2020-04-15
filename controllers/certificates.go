@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"github.com/astaxie/beego"
@@ -65,7 +66,11 @@ func (c *CertificatesController) Download() {
 	addFileToZip(zw, keysPath+"/ca.crt")
 	addFileToZip(zw, keysPath+"/issued/"+name+".crt")
 	addFileToZip(zw, keysPath+"/private/"+name+".key")
-	// addFileToZip(zw, keysPath+"ta.key")
+
+	files := strings.Split(strings.Trim(string(models.GlobalCfg.OVExtraFiles), " "), " ")
+	for _, file := range files {
+		addFileToZip(zw, keysPath+"/"+file)
+	}
 
 	if err := zw.Close(); err != nil {
 		beego.Error(err)
