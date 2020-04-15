@@ -58,14 +58,14 @@ func (c *CertificatesController) Download() {
 
 	zw := zip.NewWriter(c.Controller.Ctx.ResponseWriter)
 
-	keysPath := models.GlobalCfg.OVPkiPath
 	if cfgPath, err := saveClientConfig(name); err == nil {
 		addFileToZip(zw, cfgPath)
 	}
-	addFileToZip(zw, keysPath+"ca.crt")
-	addFileToZip(zw, keysPath+name+".crt")
-	addFileToZip(zw, keysPath+name+".key")
-	addFileToZip(zw, keysPath+"ta.key")
+	keysPath := models.GlobalCfg.OVPkiPath + "/pki"
+	addFileToZip(zw, keysPath+"/ca.crt")
+	addFileToZip(zw, keysPath+"/issued/"+name+".crt")
+	addFileToZip(zw, keysPath+"/private/"+name+".key")
+	// addFileToZip(zw, keysPath+"ta.key")
 
 	if err := zw.Close(); err != nil {
 		beego.Error(err)
