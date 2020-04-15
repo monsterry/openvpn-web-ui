@@ -141,6 +141,54 @@ func (c *CertificatesController) Post() {
 	c.showCerts()
 }
 
+// @router /certificates/renew [post]
+func (c *CertificatesController) RenewCertificate() {
+	c.TplName = "certificates.html"
+	flash := beego.NewFlash()
+
+	cParams := NewCertParams{}
+	if err := c.ParseForm(&cParams); err != nil {
+		beego.Error(err)
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
+	} else {
+		if vMap := validateCertParams(cParams); vMap != nil {
+			c.Data["validation"] = vMap
+		} else {
+			if err := lib.RenewCertificate(cParams.Name); err != nil {
+				beego.Error(err)
+				flash.Error(err.Error())
+				flash.Store(&c.Controller)
+			}
+		}
+	}
+	c.Redirect(beego.URLFor("CertificatesController.Get"), 303)
+}
+
+// @router /certificates/revoke [post]
+func (c *CertificatesController) RevokeCertificate() {
+	c.TplName = "certificates.html"
+	flash := beego.NewFlash()
+
+	cParams := NewCertParams{}
+	if err := c.ParseForm(&cParams); err != nil {
+		beego.Error(err)
+		flash.Error(err.Error())
+		flash.Store(&c.Controller)
+	} else {
+		if vMap := validateCertParams(cParams); vMap != nil {
+			c.Data["validation"] = vMap
+		} else {
+			if err := lib.RevokeCertificate(cParams.Name, "unspecified"); err != nil {
+				beego.Error(err)
+				flash.Error(err.Error())
+				flash.Store(&c.Controller)
+			}
+		}
+	}
+	c.Redirect(beego.URLFor("CertificatesController.Get"), 303)
+}
+
 func validateCertParams(cert NewCertParams) map[string]map[string]string {
 	valid := validation.Validation{}
 	b, err := valid.Valid(&cert)

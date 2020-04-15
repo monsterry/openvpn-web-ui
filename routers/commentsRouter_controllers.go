@@ -79,4 +79,21 @@ func init() {
 			Filters:          nil,
 			Params:           nil})
 
+	beego.GlobalControllerRouter["github.com/monsterry/openvpn-web-ui/controllers:CertificatesController"] = append(beego.GlobalControllerRouter["github.com/monsterry/openvpn-web-ui/controllers:CertificatesController"],
+		beego.ControllerComments{
+			Method:           "RenewCertificate",
+			Router:           `/certificates/renew`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
+
+	beego.GlobalControllerRouter["github.com/monsterry/openvpn-web-ui/controllers:CertificatesController"] = append(beego.GlobalControllerRouter["github.com/monsterry/openvpn-web-ui/controllers:CertificatesController"],
+		beego.ControllerComments{
+			Method:           "RevokeCertificate",
+			Router:           `/certificates/revoke`,
+			AllowHTTPMethods: []string{"post"},
+			MethodParams:     param.Make(),
+			Filters:          nil,
+			Params:           nil})
 }

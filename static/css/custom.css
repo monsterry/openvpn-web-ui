@@ -19,3 +19,11 @@
   white-space: initial;
   display: block;
 }
+
+.div-action {
+  display: flex;
+}
+
+.btn-action {
+  margin-right: 2px;
+}

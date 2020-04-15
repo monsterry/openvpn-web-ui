@@ -14,14 +14,15 @@ import (
 //Cert
 //https://groups.google.com/d/msg/mailing.openssl.users/gMRbePiuwV0/wTASgPhuPzkJ
 type Cert struct {
-	EntryType   string
-	Expiration  string
-	ExpirationT time.Time
-	Revocation  string
-	RevocationT time.Time
-	Serial      string
-	FileName    string
-	Details     *Details
+	EntryType        string
+	Expiration       string
+	ExpirationT      time.Time
+	Revocation       string
+	RevocationT      time.Time
+	RevocationReason string
+	Serial           string
+	FileName         string
+	Details          *Details
 }
 
 type Details struct {
@@ -51,19 +52,22 @@ func ReadCerts(path string) ([]*Cert, error) {
 		}
 		expT, _ := time.Parse("060102150405Z", fields[1])
 		revT, _ := time.Parse("060102150405Z", fields[2])
+		revReason := ""
 		if strings.Contains(fields[2], ",") {
 			revFields := strings.Split(trim(fields[2]), ",")
 			revT, _ = time.Parse("060102150405Z", revFields[0])
+			revReason = revFields[1]
 		}
 		c := &Cert{
-			EntryType:   fields[0],
-			Expiration:  fields[1],
-			ExpirationT: expT,
-			Revocation:  fields[2],
-			RevocationT: revT,
-			Serial:      fields[3],
-			FileName:    fields[4],
-			Details:     parseDetails(fields[5]),
+			EntryType:        fields[0],
+			Expiration:       fields[1],
+			ExpirationT:      expT,
+			Revocation:       fields[2],
+			RevocationT:      revT,
+			RevocationReason: revReason,
+			Serial:           fields[3],
+			FileName:         fields[4],
+			Details:          parseDetails(fields[5]),
 		}
 		certs = append(certs, c)
 	}
@@ -122,5 +126,54 @@ func CreateCertificate(name string) error {
 		beego.Error(err)
 		return err
 	}
+	return nil
+}
+
+func RevokeCertificate(name string, reason string) error {
+	cmd := exec.Command("/bin/bash", "-c",
+		fmt.Sprintf(
+			"%s --batch revoke %s %s", models.GlobalCfg.OVEasyRsaPath, name, reason))
+	cmd.Dir = models.GlobalCfg.OVPkiPath
+	output, err := cmd.CombinedOutput()
+	if err != nil {
+		beego.Debug(string(output))
+		beego.Error(err)
+		return err
+	}
+	cmd = exec.Command("/bin/bash", "-c",
+		fmt.Sprintf(
+			"%s gen-crl", models.GlobalCfg.OVEasyRsaPath))
+	cmd.Dir = models.GlobalCfg.OVPkiPath
+	output, err = cmd.CombinedOutput()
+	if err != nil {
+		beego.Debug(string(output))
+		beego.Error(err)
+		return err
+	}
+	return nil
+}
+
+func RenewCertificate(name string) error {
+	err := RevokeCertificate(name, "superseded")
+
+	if err != nil {
+		return err
+	}
+	// ATM easyrsa renew, does not handle revoked files
+	CreateCertificate(name)
+	if err != nil {
+		return err
+	}
+
+	// cmd := exec.Command("/bin/bash", "-c",
+	// 	fmt.Sprintf(
+	// 		"%s --batch renew %s", models.GlobalCfg.OVEasyRsaPath, name))
+	// cmd.Dir = models.GlobalCfg.OVPkiPath
+	// output, err := cmd.CombinedOutput()
+	// if err != nil {
+	// 	beego.Debug(string(output))
+	// 	beego.Error(err)
+	// 	return err
+	// }
 	return nil
 }

@@ -27,7 +27,7 @@
                 <th>Revocation</th>
                 <th>Serial</th>
                 <th>Details</th>
-                <th></th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -35,6 +35,9 @@
               {{range .certificates}}
               {{ if ne .Details.Name $.serverName }}
               <tr>
+                {{if ne .Revocation ""}}
+                <td>Revoked</td>
+                {{else}}
                 <td>
                   <a href="{{urlfor "CertificatesController.Download" ":key" .Details.Name}}">
                     {{ .Details.Name }}.zip
@@ -43,6 +46,7 @@
                       {{ .Details.Name }}.ovpn
                     </a> -->
                 </td>
+                {{end}}
                 <td>{{ .EntryType }}</td>
                 <td>{{ dateformat .ExpirationT "2006-01-02 15:04"}}</td>
                 {{if eq .Revocation ""}}
@@ -56,6 +60,24 @@
                   <span class="label label-warning">CN: {{ .Details.CN }}</span>
                   <span class="label label-warning">Email: {{ .Details.Email }}</span>
                 </td>
+                {{if eq .Revocation ""}}
+                <td>
+                  <div class="div-action">
+                    <form role="form" action="{{urlfor "CertificatesController.RenewCertificate"}}" method="post">
+                      <input type="hidden" class="form-control1" id="RenewName" name="Name" value="{{ .Details.Name }}">
+                      <button type="submit" class="btn btn-primary btn-action">Renew</button>
+                    </form>
+                    <form role="form" action="{{urlfor "CertificatesController.RevokeCertificate"}}" method="post">
+                      <input type="hidden" class="form-control2" id="RevokeName" name="Name" value="{{ .Details.Name }}">
+                      <button type="submit" class="btn btn-primary btn-action">Revoke</button>
+                    </form>
+                    <!-- <input type="button" class="btn btn-primary btn-action" onclick="$.MyAPP.RenewCert({{.Details.CN}})">Renew</button>
+                    <input type="button" class="btn btn-primary btn-action" onclick="$.MyAPP.RevokeCert({{.Details.CN}})">Revoke</button> -->
+                  </div>
+                </td>
+                {{else}}
+                <td></td>
+                {{end}}
               </tr>
               {{ end }}
               {{end}}
