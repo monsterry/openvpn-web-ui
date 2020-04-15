@@ -51,6 +51,10 @@ func ReadCerts(path string) ([]*Cert, error) {
 		}
 		expT, _ := time.Parse("060102150405Z", fields[1])
 		revT, _ := time.Parse("060102150405Z", fields[2])
+		if strings.Contains(fields[2], ",") {
+			revFields := strings.Split(trim(fields[2]), ",")
+			revT, _ = time.Parse("060102150405Z", revFields[0])
+		}
 		c := &Cert{
 			EntryType:   fields[0],
 			Expiration:  fields[1],
@@ -93,6 +97,11 @@ func parseDetails(d string) *Details {
 			default:
 				beego.Warn(fmt.Sprintf("Undefined entry: %s", line))
 			}
+		}
+
+		// Fallback if only cn is specified
+		if details.Name == "" {
+			details.Name = details.CN
 		}
 	}
 	return details
