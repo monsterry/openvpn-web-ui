@@ -20,45 +20,45 @@
         <div class="table-responsive">
           <table class="table no-margin">
             <thead>
-            <tr>
-              <th>Name</th>
-              <th>State</th>
-              <th>Expiration</th>
-              <th>Revocation</th>
-              <th>Serial</th>
-              <th>Details</th>
-              <th></th>
-            </tr>
+              <tr>
+                <th>Name</th>
+                <th>State</th>
+                <th>Expiration</th>
+                <th>Revocation</th>
+                <th>Serial</th>
+                <th>Details</th>
+                <th></th>
+              </tr>
             </thead>
             <tbody>
 
-            {{range .certificates}}
+              {{range .certificates}}
               {{ if ne .Details.Name $.serverName }}
               <tr>
-                  <td>
-                    <a href="{{urlfor "CertificatesController.Download" ":key" .Details.Name}}">
-                      {{ .Details.Name }}.zip
-                    </a>
-                    <!-- <a href="{{urlfor "CertificatesController.DownloadSingleConfig" ":key" .Details.Name}}">
+                <td>
+                  <a href="{{urlfor "CertificatesController.Download" ":key" .Details.Name}}">
+                    {{ .Details.Name }}.zip
+                  </a>
+                  <!-- <a href="{{urlfor "CertificatesController.DownloadSingleConfig" ":key" .Details.Name}}">
                       {{ .Details.Name }}.ovpn
                     </a> -->
-                  </td>
-                  <td>{{ .EntryType }}</td>
-                  <td>{{ dateformat .ExpirationT "2006-01-02 15:04"}}</td>
-                  {{if eq .Revocation ""}}
-                    <td></td>
-                  {{else}}
-                    <td>{{ dateformat .RevocationT "2006-01-02 15:04"}}</td>
-                  {{end}}
-                  <td>{{ .Serial }}</td>
-                  <td>
-                    <span class="label label-warning">Country: {{ .Details.Country }}</span>
-                    <span class="label label-warning">CN: {{ .Details.CN }}</span>
-                    <span class="label label-warning">Email: {{ .Details.Email }}</span>
-                  </td>
+                </td>
+                <td>{{ .EntryType }}</td>
+                <td>{{ dateformat .ExpirationT "2006-01-02 15:04"}}</td>
+                {{if eq .Revocation ""}}
+                <td></td>
+                {{else}}
+                <td>{{ dateformat .RevocationT "2006-01-02 15:04"}}</td>
+                {{end}}
+                <td>{{ .Serial }}</td>
+                <td>
+                  <span class="label label-warning">Country: {{ .Details.Country }}</span>
+                  <span class="label label-warning">CN: {{ .Details.CN }}</span>
+                  <span class="label label-warning">Email: {{ .Details.Email }}</span>
+                </td>
               </tr>
               {{ end }}
-            {{end}}
+              {{end}}
 
             </tbody>
           </table>
@@ -91,7 +91,7 @@
   {{template "common/alert.html" .}}
   <form role="form" action="{{urlfor "CertificatesController.Post"}}" method="post">
     <div class="box-body">
-      <div class="form-group {{if field_error_exist .validation "Name" }}has-error{{end}}" >
+      <div class="form-group {{if field_error_exist .validation "Name" }}has-error{{end}}">
         <label for="name">Name</label>
         <input type="text" class="form-control" id="Name" name="Name">
       </div>
@@ -102,6 +102,6 @@
     <div class="box-footer">
       <button type="submit" class="btn btn-primary">Create</button>
     </div>
-    </form>
-    </div>
+  </form>
+</div>
 {{end}}
