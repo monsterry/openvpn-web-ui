@@ -42,8 +42,7 @@ func (c *CertificatesController) DownloadSingleConfig() {
 	c.Ctx.Output.Header("Content-Type", "text/plain")
 	c.Ctx.Output.Header("Content-Disposition", fmt.Sprintf("attachment; filename=\"%s\"", filename))
 
-	keysPath := models.GlobalCfg.OVConfigPath + "keys/"
-	if cfgPath, err := saveClientSingleConfig(name, keysPath); err == nil {
+	if cfgPath, err := saveClientSingleConfig(name); err == nil {
 		c.Ctx.Output.Download(cfgPath, filename)
 	}
 
@@ -59,7 +58,7 @@ func (c *CertificatesController) Download() {
 
 	zw := zip.NewWriter(c.Controller.Ctx.ResponseWriter)
 
-	keysPath := models.GlobalCfg.OVConfigPath + "keys/"
+	keysPath := models.GlobalCfg.OVPkiPath
 	if cfgPath, err := saveClientConfig(name); err == nil {
 		addFileToZip(zw, cfgPath)
 	}
@@ -107,7 +106,7 @@ func (c *CertificatesController) Get() {
 }
 
 func (c *CertificatesController) showCerts() {
-	path := models.GlobalCfg.OVConfigPath + "keys/index.txt"
+	path := models.GlobalCfg.OVPkiPath + "/pki/index.txt"
 	certs, err := lib.ReadCerts(path)
 	if err != nil {
 		beego.Error(err)
@@ -168,7 +167,7 @@ func saveClientConfig(name string) (string, error) {
 	cfg.Cipher = serverConfig.Cipher
 	cfg.Keysize = serverConfig.Keysize
 
-	destPath := models.GlobalCfg.OVConfigPath + "keys/" + name + ".ovpn"
+	destPath := models.GlobalCfg.OVPkiPath + "/" + name + ".ovpn"
 	if err := config.SaveToFile("conf/openvpn-client-config.tpl",
 		cfg, destPath); err != nil {
 		beego.Error(err)
@@ -178,9 +177,10 @@ func saveClientConfig(name string) (string, error) {
 	return destPath, nil
 }
 
-func saveClientSingleConfig(name string, pathString string) (string, error) {
+func saveClientSingleConfig(name string) (string, error) {
 	cfg := config.New()
 	cfg.ServerAddress = models.GlobalCfg.ServerAddress
+	pathString := models.GlobalCfg.OVPkiPath + "/pki"
 	cfg.Cert = readCert(pathString + name + ".crt")
 	cfg.Key = readCert(pathString + name + ".key")
 	cfg.Ca = readCert(pathString + "ca.crt")
@@ -192,7 +192,7 @@ func saveClientSingleConfig(name string, pathString string) (string, error) {
 	cfg.Cipher = serverConfig.Cipher
 	cfg.Keysize = serverConfig.Keysize
 
-	destPath := models.GlobalCfg.OVConfigPath + "keys/" + name + ".ovpn"
+	destPath := models.GlobalCfg.OVPkiPath + name + ".ovpn"
 	if err := config.SaveToFile("conf/openvpn-client-config.ovpn.tpl",
 		cfg, destPath); err != nil {
 		beego.Error(err)

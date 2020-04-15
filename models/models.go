@@ -78,6 +78,8 @@ func createDefaultSettings() {
 		ServerAddress: "127.0.0.1",
 		OVConfigPath:  "/etc/openvpn/",
 		ServerName:    "server",
+		OVPkiPath:     "/etc/openvpn/keys",
+		OVEasyRsaPath: "/usr/share/easy-rsa/easyrsa",
 	}
 	o := orm.NewOrm()
 	if created, _, err := o.ReadOrCreate(&s, "Profile"); err == nil {

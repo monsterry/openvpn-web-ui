@@ -17,9 +17,13 @@ type Settings struct {
 
 	OVConfigPath string `orm:"size(64);unique" form:"OVConfigPath" valid:"Required;"`
 
+	OVPkiPath string `orm:"size(64);unique" form:"OVPkiPath" valid:"Required;"`
+
 	ServerAddress string `orm:"size(64);unique" form:"ServerAddress" valid:"Required;"`
 
 	ServerName string `orm:"size(64);unique" form:"ServerName" valid:"Required;"`
+
+	OVEasyRsaPath string `orm:"size(64);unique" form:"OVEasyRsaPath" valid:"Required;"`
 
 	Created time.Time `orm:"auto_now_add;type(datetime)"`
 	Updated time.Time `orm:"auto_now;type(datetime)"`

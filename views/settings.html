@@ -50,6 +50,18 @@
           value="{{ .Settings.OVConfigPath }}">
       </div>
 
+      <div class="form-group">
+        <label for="name">Pki Path</label>
+        <input type="text" class="form-control" id="OVPkiPath" name="OVPkiPath" placeholder="Enter path to the directory containing the 'pki' dir"
+          value="{{ .Settings.OVPkiPath }}">
+      </div>
+
+      <div class="form-group">
+        <label for="name">EasyRSA Path</label>
+        <input type="text" class="form-control" id="OVEasyRsaPath" name="OVEasyRsaPath" placeholder="Enter path to the EasyRSA Binary"
+          value="{{ .Settings.OVEasyRsaPath }}">
+      </div>
+
       {{ .xsrfdata }}
     </div>
     <!-- /.box-body -->
