@@ -69,7 +69,7 @@ func (c *CertificatesController) Download() {
 
 	files := strings.Split(strings.Trim(string(models.GlobalCfg.OVExtraFiles), " "), " ")
 	for _, file := range files {
-		addFileToZip(zw, keysPath+"/"+file)
+		addFileToZip(zw, models.GlobalCfg.OVPkiPath+"/"+file)
 	}
 
 	if err := zw.Close(); err != nil {
