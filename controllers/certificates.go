@@ -116,9 +116,9 @@ func (c *CertificatesController) showCerts() {
 	if err != nil {
 		beego.Error(err)
 	}
-	lib.Dump(certs)
+	//lib.Dump(certs)
 	c.Data["certificates"] = &certs
-	lib.Dump(models.GlobalCfg.ServerName)
+	//lib.Dump(models.GlobalCfg.ServerName)
 	c.Data["serverName"] = models.GlobalCfg.ServerName
 	c.Data["sysAdmin"] = models.GlobalCfg.SysAdmin
 }
