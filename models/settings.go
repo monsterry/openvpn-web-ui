@@ -27,6 +27,8 @@ type Settings struct {
 
 	OVExtraFiles string `orm:"size(256);unique" form:"OVExtraFiles" valid:"Optional;"`
 
+	SysAdmin string `orm:"size(64);unique" form:"SysAdmin" valid:"Required;"`
+
 	Created time.Time `orm:"auto_now_add;type(datetime)"`
 	Updated time.Time `orm:"auto_now;type(datetime)"`
 }

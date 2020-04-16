@@ -45,6 +45,12 @@
       </div>
 
       <div class="form-group">
+        <label for="name">System Admin Name</label>
+        <input type="text" class="form-control" id="SysAdmin" name="SysAdmin" placeholder="Enter the entity responsible for managing the server"
+          value="{{ .Settings.SysAdmin }}">
+      </div>
+
+      <div class="form-group">
         <label for="name">ConfigPath</label>
         <input type="text" class="form-control" id="OVConfigPath" name="OVConfigPath" placeholder="Enter config path"
           value="{{ .Settings.OVConfigPath }}">

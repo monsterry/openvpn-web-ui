@@ -120,6 +120,7 @@ func (c *CertificatesController) showCerts() {
 	c.Data["certificates"] = &certs
 	lib.Dump(models.GlobalCfg.ServerName)
 	c.Data["serverName"] = models.GlobalCfg.ServerName
+	c.Data["sysAdmin"] = models.GlobalCfg.SysAdmin
 }
 
 // @router /certificates [post]
